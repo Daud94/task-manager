@@ -16,12 +16,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(body: CreateUserDto): Promise<User> {
-    const userExist = await this.userService.findUserByEmail(body.email);
-    if (userExist) {
-      throw new ConflictException('User with the email exists');
-    }
-    return await this.userService.createUser(body);
+  async signUp(body: CreateUserDto) {
+    await this.userService.createUser(body);
+    return {
+      success: true,
+      message: 'Success',
+    };
   }
 
   async signIn(body: SignInDto): Promise<string> {
