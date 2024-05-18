@@ -29,3 +29,8 @@ export class UpdateUserDto extends PickType(CreateUserDto, [
   'firstName',
   'lastName',
 ] as const) {}
+
+export class SignInDto extends PickType(CreateUserDto, [
+  'email',
+  'password',
+] as const) {}
