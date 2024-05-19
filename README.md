@@ -1,28 +1,21 @@
 ## Description
 
-This is a Bookstore app (backend) that assist bookstore owners keep record of books including their authors and the
-category each book belongs to. The app is developed with **NestJS** with **Prisma** for database mapping.The app requires that bookstore owner signup by providing basic details like `firstName`,
-`lastName`, `email` and `password`. There is a signin page that allow user to sign in on the app.
+This is a basic task management app that allow a user to sign up and create, a task. The app is developed with **NestJS** with **Prisma** for database CRUD operation.
 
-After signing up, the user can create new book category, author and add books based on created categories and authors.
 
 ## Installation
 
 1. Clone this repository:
    ```bash
-   $ git clone https://github.com/Daud94/be-assessment.git
+   $ git clone https://github.com/Daud94/task-manager.git
    ```
 2. Navigate into the project directory:
 
    ```bash
-   $ cd quiz-app-backend
+   $ cd task-manager
    ```
 
-3. Checkout to dev branch
-    ```
-   $ git checkout dev
-   ```
-4. Install dependencies
+3. Install dependencies
 
    ```bash
    $ npm install
@@ -47,12 +40,13 @@ Since this app makes use of sqlite, you don't need to carry out any configuratio
 
 ## Environment Variables
 
-onfigure the application using environment variables. Create a `.env` file in the root of the project and define the
+configure the application using environment variables. Create a `.env` file in the root of the project and define the
 following variables:
 
 ```
     SALT_OR_ROUNDS=
     JWT_SECRET=
+    PORT=
 ```
 
 ## Running the app
@@ -69,13 +63,37 @@ following variables:
 ````
 
 ## API Documentation
-
-The API documentation `Quiz App.postman_collection.json` for this can be found in the root project directory. It should be
+The API documentation `Task Manager.postman_collection` for this can be found in the root project directory. It should be
 imported into Postman to test all API endpoints. Each endpoint comes with a sample request and response.
 
-## Testing
+## API ENDPOINTS
 
-Testing is done to test `Signup` and `Signin` of user. Test file can be found in `auth.controller.spec.ts` in auth directory.
+**_AUTHENTICATION_**
+* Sign up - /auth/signup
+* Sign in - /auth/signin
+
+JWT token is returned upon signing in. It should be stored on the client side for requests to other endpoints. 
+Logout should be implemented on the client side to invalidate or clear the auth token.
+
+**_USER_**
+* Update profile - /users/:id  [PUT]
+* Delete account - /users/:id  [DELETE]
+
+
+_**TASK**_
+* Create task - /tasks     [POST]
+* Get task - /tasks/:id  [GET]
+* Update task - /tasks/:id  [PUT]
+* Delete account - /tasks/:id  [DELETE]
+* Get all user tasks - /tasks [GET] - This allows for pagination and other filtering options like: task name, filtering
+based on description, date range of task creation etc. Mode info is in the postman collection.
+
+## Socket
+To test streaming of task creation realtime, create two socket.io requests using Postman's socket.io client. One should be for the subscriber event 
+`createTask` which listens for the client request to create a task, and the other `OnTaskCreate` which emits the task created
+to clients realtime. Attached are images located in the `socket-images` folder in the project directory to help with socket.io setup on postman.
+
+
 
 
 
