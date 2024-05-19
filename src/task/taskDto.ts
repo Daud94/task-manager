@@ -16,7 +16,7 @@ export class CreateTaskDto {
 
   @ApiProperty()
   @IsOptional()
-  @Transform((params) => params.value.trim())
+  @Transform((params) => params.value.dueDate && new Date(params.value.duedate))
   dueDate?: Date;
 }
 
@@ -33,8 +33,7 @@ export class UpdateTaskDto {
 
   @ApiProperty()
   @IsOptional()
-  @Transform((params) => params.value.trim())
-  dueDate?: Date;
+  dueDate?: Date | null;
 
   @ApiProperty()
   @IsOptional()

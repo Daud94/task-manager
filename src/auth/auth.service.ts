@@ -24,7 +24,7 @@ export class AuthService {
     };
   }
 
-  async signIn(body: SignInDto): Promise<string> {
+  async signIn(body: SignInDto) {
     const user = await this.userService.findUserByEmail(body.email);
     if (!user) {
       throw new BadRequestException('Invalid email address');
@@ -38,7 +38,10 @@ export class AuthService {
       { userId: user.id },
       { secret: process.env['JWT_SECRET'], expiresIn: 86400 },
     );
-
-    return token;
+    delete user.password;
+    return {
+      accessToken: token,
+      data: user,
+    };
   }
 }

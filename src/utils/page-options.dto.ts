@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { TaskStatus } from '../task/TaskStatus';
 
@@ -19,29 +19,33 @@ export class PageOptionsDto {
   description?: string;
 
   @IsOptional()
-  startDate?: Date;
+  startDate?: string;
 
   @IsOptional()
+  @Transform((params) => params.value.endDate && new Date(params.value.endDate))
   endDate?: Date;
 
   @IsOptional()
-  @IsEnum(TaskStatus, { message: 'Invalid status' })
+  // @IsEnum(TaskStatus, { message: 'Invalid status' })
+  // @Transform((params) => (params.value ? params.value : TaskStatus.TODO))
   status?: string;
 
   @Type(() => Number)
   @IsInt()
   @Min(1)
+  @Transform((params) => (params.value ? parseInt(params.value) : 1))
   @IsOptional()
-  readonly page?: number = 1;
+  readonly page?: number;
 
   @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(500)
   @IsOptional()
-  readonly take?: number = 20;
+  @Transform((params) => (params.value ? parseInt(params.value) : 20))
+  readonly take?: number;
 
-  skip(): number {
+  get skip() {
     return (this.page - 1) * this.take;
   }
 }

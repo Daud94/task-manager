@@ -71,7 +71,7 @@ export class TaskController {
     await this.taskService.deleteTask(id);
     return {
       success: true,
-      message: 'Task fetched successfully',
+      message: 'Task deleted successfully',
     };
   }
 }

@@ -20,11 +20,11 @@ export class AuthController {
   async signIn(
     @Body() body: SignInDto,
   ): Promise<{ success: boolean; message: string; accessToken: string }> {
-    const token = await this.authService.signIn(body);
+    const data = await this.authService.signIn(body);
     return {
       success: true,
       message: 'Signin successful!',
-      accessToken: token,
+      ...data,
     };
   }
 }

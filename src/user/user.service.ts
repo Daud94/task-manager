@@ -1,11 +1,11 @@
 import { PrismaService } from '../prisma.service';
 import { User } from '@prisma/client';
-import { CreateUserDto } from './userDto';
+import { CreateUserDto, UpdateUserDto } from './userDto';
 import { hash } from '../utils/utils';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, Inject, NotFoundException } from '@nestjs/common';
 
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
   async findUserById(id: number): Promise<User> {
     return this.prisma.user.findFirst({
@@ -16,7 +16,7 @@ export class UserService {
   async findUserByEmail(email: string): Promise<User> {
     return this.prisma.user.findFirst({
       where: {
-        email: email,
+        email,
       },
     });
   }
@@ -28,6 +28,15 @@ export class UserService {
     }
     return this.prisma.user.create({
       data: { ...data, password: await hash(data.password) },
+    });
+  }
+
+  async updateUser(userId: number, body: UpdateUserDto) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: { ...body },
     });
   }
 
